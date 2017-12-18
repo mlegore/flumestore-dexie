@@ -1,0 +1,14 @@
+{
+  "name": "flumestore-dexie",
+  "version": "1.0.0",
+  "description": "A key value store for flumedb views based on dexie.js (IndexedDB wrapper)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "tape": "^4.8.0"
+  }
+}
