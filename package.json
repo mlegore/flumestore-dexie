@@ -10,5 +10,8 @@
   "license": "MIT",
   "devDependencies": {
     "tape": "^4.8.0"
+  },
+  "dependencies": {
+    "dexie": "^2.0.1"
   }
 }
