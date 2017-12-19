@@ -1,31 +1,36 @@
 var Dexie = require('dexie')
 
 var Store = function (opts) {
-  function (name, version) {
+  return function (name, version) {
     if (Dexie.default)
-        Dexie = Dexie.default
+      Dexie = Dexie.default
 
     var db = new Dexie(opts.keyValueDB || 'flumedb')
-    db.version(version).stores({ [name]: '++key' });
+    db.version(version).stores({ [name]: 'key' });
+    var store = db[name]
 
     return {
-      get (cb) {
-        return b.state.get(key)
-        .then(value => {
-          if (value)
-            return cb(null, value.value)
-          cb(value)
-        }, err => {
-          cb(err)
-        })
+      get (key) {
+        return store.get(key)
+          .then(value => {
+            if (value) {
+              return value.value
+            }
+            return null
+          })
       },
-      set (key, value, cb) {
-        return b.state.put({key, value: value})
-        .then(val => {
-          cb(null, val)
-        }, err => {
-          cb(err)
-        })
+      set (key, value) {
+        return store.put({key, value: value})
+          .then(val => {
+            return val.value
+          })
+      },
+      bulkSet (values) {
+        if (values.every(item => item.key && item.value)) {
+          throw new Error('All items must have a key and value property')
+        }
+
+        return store.bulkPut(values)
       }
     }
   }
@@ -36,14 +41,11 @@ module.exports.plugin = {
   name: 'ssb-flumestore-dexie',
   manifest: {},
   init: function (ssb, config) {
-    ssb._flumeUseOptions({
+    ssb.flumeUseOptions({
       KeyValueStore: Store(config)
     })
 
-    return {
-      // merge in replacement for createLogStream
-      createLogStream
-    }
+    return {}
   }
 }
 
