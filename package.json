@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A key value store for flumedb views based on dexie.js (IndexedDB wrapper)",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mlegore/flumestore-dexie.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
